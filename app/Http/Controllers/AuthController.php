@@ -30,6 +30,15 @@ class AuthController extends Controller
 
         return response()->json([
             "message" => 'The provided credentials do not match our records.'
+        ], 401);
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        Auth::logout();
+
+        return response()->json([
+            "message" => 'You have been logged out of your account.'
         ]);
     }
 
@@ -40,6 +49,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|unique:users',
             'password' => 'required|min:8'
         ]);
+
         $user = User::create([
             'name' => $registerUserData['name'],
             'email' => $registerUserData['email'],
@@ -55,25 +65,4 @@ class AuthController extends Controller
     {
         return $request->user();
     }
-
-    // public function register()
-    // {
-
-    // }
-
-    // public function login(Request $request): RedirectResponse
-    // {
-    //     $credentials = $request->validate([
-    //         'email' => ['required', 'email'],
-    //         'password' => ['required'],
-    //     ]);
- 
-    //     if (Auth::attempt($credentials)) {
-    //         $request->session()->regenerate();
- 
-    //         return response()->json(['test' => 'success']);;
-    //     }
-        
-    //     return response()->json(['test' => 'failure']);
-    // }
 }
